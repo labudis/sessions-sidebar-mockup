@@ -819,14 +819,14 @@
 <!-- Option selector -->
 <div class="option-nav">
   <span class="option-nav-label">Placement:</span>
-  <button class="option-btn active" onclick="show('a')">A. Tabs</button>
+  <button class="option-btn active" onclick="show('a')">A. Header pill</button>
   <button class="option-btn" onclick="show('b')">B. Timeline events</button>
-  <button class="option-btn" onclick="show('c')">C. Pinned banner</button>
-  <button class="option-btn" onclick="show('d')">D. Sidebar section</button>
-  <button class="option-btn" onclick="show('e')">E. Header pill</button>
+  <button class="option-btn" onclick="show('c')">C. Sidebar section</button>
+  <button class="option-btn" onclick="show('d')">D. Pinned banner</button>
+  <button class="option-btn" onclick="show('e')">E. Tabs</button>
 </div>
 
-<!-- ==================== OPTION A: Tabs ==================== -->
+<!-- ==================== OPTION A: Header pill ==================== -->
 <div class="mockup-section active" id="section-a">
 <div class="issue-page">
   <div class="issue-header">
@@ -840,59 +840,93 @@
         Open
       </span>
       <span class="issue-meta-text"><a href="#">monalisa</a> opened 3 days ago · 4 comments</span>
-    </div>
-  </div>
 
-  <div class="placement-annotation">▼ Sessions as a tab alongside conversation</div>
+      <div class="pill-wrapper" style="margin-left: 8px;">
+        <div class="placement-annotation" style="margin-bottom:0;margin-right:8px;">▶</div>
+        <div class="sessions-pill" onclick="this.parentElement.querySelector('.sessions-dropdown').classList.toggle('active')" style="position:relative;">
+          <span class="pill-dot"></span>
+          <span>1 running</span>
+          <span class="pill-count">· 3 total</span>
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="m4.427 7.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z"/></svg>
 
-  <div class="issue-tabs">
-    <div class="issue-tab">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z"/></svg>
-      Conversation <span class="tab-count">4</span>
-    </div>
-    <div class="issue-tab active">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06l-4.25-4.25Z"/></svg>
-      Sessions <span class="tab-count">3</span>
+          <div class="sessions-dropdown active">
+            <div class="dropdown-header">
+              <span>Sessions</span>
+              <span style="font-weight:400;color:#9198a1;">3 sessions</span>
+            </div>
+
+            <div class="dropdown-session">
+              <div class="session-icon coding">
+                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06l-4.25-4.25Z"/></svg>
+              </div>
+              <div class="session-info">
+                <span class="session-label">Fix null ref in auth flow</span>
+                <span class="session-meta"><span class="status-dot running"></span> Running · Coding</span>
+              </div>
+              <div>
+                <span class="session-branch">fix/auth-null-ref</span>
+                <div class="session-meta-right">4m ago</div>
+              </div>
+            </div>
+
+            <div class="dropdown-session">
+              <div class="session-icon triage">
+                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0ZM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 3.75a.75.75 0 0 0-1.5 0v3.5a.75.75 0 0 0 .471.696l2.5 1a.75.75 0 0 0 .557-1.392L8.75 6.617Z"/></svg>
+              </div>
+              <div class="session-info">
+                <span class="session-label">Triage run</span>
+                <span class="session-meta"><span class="status-dot completed"></span> Completed · Triage</span>
+              </div>
+              <div>
+                <div class="session-meta-right">1h ago</div>
+              </div>
+            </div>
+
+            <div class="dropdown-session">
+              <div class="session-icon planning">
+                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75C2 .784 2.784 0 3.75 0h8.5C13.216 0 14 .784 14 1.75v12.5A1.75 1.75 0 0 1 12.25 16h-8.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM4.75 4a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5ZM4 7.75A.75.75 0 0 1 4.75 7h6.5a.75.75 0 0 1 0 1.5h-6.5A.75.75 0 0 1 4 7.75ZM4.75 10a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z"/></svg>
+              </div>
+              <div class="session-info">
+                <span class="session-label">Plan migration to v2 API</span>
+                <span class="session-meta"><span class="status-dot failed"></span> Failed · Planning</span>
+              </div>
+              <div>
+                <div class="session-meta-right">2d ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="issue-layout">
     <div class="issue-main">
-      <div class="tab-sessions-panel">
-        <div class="tab-session-row">
-          <div class="session-icon coding">
-            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06l-4.25-4.25Z"/></svg>
+      <div class="timeline-item">
+        <div class="avatar-md bg-purple">M</div>
+        <div class="comment-box">
+          <div class="comment-header">
+            <a href="#">monalisa</a> commented 3 days ago
           </div>
-          <span class="tab-session-name">Fix null ref in auth flow</span>
-          <span class="tab-session-type">Coding</span>
-          <span class="session-branch">fix/auth-null-ref</span>
-          <span class="tab-session-status"><span class="status-dot running"></span> Running</span>
-          <span class="tab-session-time">4m ago</span>
+          <div class="comment-body">
+            Users are getting 500 errors when refreshing tokens. Stack trace points to <code>AuthMiddleware.cs:42</code> where <code>user.Session</code> is null.
+          </div>
         </div>
-        <div class="tab-session-row">
-          <div class="session-icon triage">
-            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0ZM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 3.75a.75.75 0 0 0-1.5 0v3.5a.75.75 0 0 0 .471.696l2.5 1a.75.75 0 0 0 .557-1.392L8.75 6.617Z"/></svg>
+      </div>
+
+      <div class="timeline-item faded" style="min-height:60px">
+        <div class="avatar-md bg-blue">L</div>
+        <div class="comment-box">
+          <div class="comment-header">
+            <a href="#">labudis</a> commented 2 days ago
           </div>
-          <span class="tab-session-name">Triage run</span>
-          <span class="tab-session-type">Triage</span>
-          <span style="min-width:102px"></span>
-          <span class="tab-session-status"><span class="status-dot completed"></span> Completed</span>
-          <span class="tab-session-time">1h ago</span>
-        </div>
-        <div class="tab-session-row">
-          <div class="session-icon planning">
-            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75C2 .784 2.784 0 3.75 0h8.5C13.216 0 14 .784 14 1.75v12.5A1.75 1.75 0 0 1 12.25 16h-8.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM4.75 4a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5ZM4 7.75A.75.75 0 0 1 4.75 7h6.5a.75.75 0 0 1 0 1.5h-6.5A.75.75 0 0 1 4 7.75ZM4.75 10a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z"/></svg>
+          <div class="comment-body" style="color:#9198a1">
+            Reproduced locally. Happens when the session cookie expires mid-request.
           </div>
-          <span class="tab-session-name">Plan migration to v2 API</span>
-          <span class="tab-session-type">Planning</span>
-          <span style="min-width:102px"></span>
-          <span class="tab-session-status"><span class="status-dot failed"></span> Failed</span>
-          <span class="tab-session-time">2d ago</span>
         </div>
       </div>
     </div>
 
-    <!-- Minimal sidebar (no sessions here) -->
     <div class="issue-sidebar faded">
       <div class="sidebar-section">
         <div class="section-header"><span class="section-title">Assignees</span></div>
@@ -907,22 +941,22 @@
 </div>
 
   <div class="narrative">
-    <h3>A. Tabs</h3>
+    <h3>A. Header Pill</h3>
     <div class="narrative-cols">
       <div class="narrative-col pro">
         <h4 class="pros">Pros</h4>
         <ul>
-          <li>Keeps conversation view completely clean; sessions are only visible when you want them</li>
-          <li>Room for rich detail per session (branch, duration, logs) without space constraints</li>
-          <li>Familiar pattern; mirrors PR tabs (Conversation, Commits, Files changed)</li>
+          <li>Always visible at the top; impossible to miss an active session</li>
+          <li>Minimal footprint; just a small pill until clicked</li>
+          <li>Dropdown provides full detail on demand without leaving the page</li>
         </ul>
       </div>
       <div class="narrative-col con">
         <h4 class="cons">Cons</h4>
         <ul>
-          <li>Sessions are hidden by default; users may not notice an agent is actively working</li>
-          <li>Requires a full page switch, breaking reading flow</li>
-          <li>Adds a new top-level tab to an already crowded header on some issue types</li>
+          <li>Header area is already dense; another element competes for attention</li>
+          <li>Dropdown overlays content, which can obscure important context</li>
+          <li>Not a standard pattern in the issues header; may feel unexpected</li>
         </ul>
       </div>
     </div>
@@ -1044,136 +1078,8 @@
 
 </div>
 
-<!-- ==================== OPTION C: Pinned banner ==================== -->
+<!-- ==================== OPTION C: Sidebar section ==================== -->
 <div class="mockup-section" id="section-c">
-<div class="issue-page">
-  <div class="issue-header">
-    <div class="issue-title-row">
-      <span class="issue-title">Null reference in auth middleware on token refresh</span>
-      <span class="issue-number">#1842</span>
-    </div>
-    <div class="issue-status-bar">
-      <span class="status-badge">
-        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"/></svg>
-        Open
-      </span>
-      <span class="issue-meta-text"><a href="#">monalisa</a> opened 3 days ago · 4 comments</span>
-    </div>
-  </div>
-
-  <div class="issue-layout">
-    <div class="issue-main">
-
-      <div class="placement-annotation">▼ Collapsible banner pinned above the conversation</div>
-
-      <!-- Sessions banner -->
-      <div class="sessions-banner">
-        <div class="banner-header">
-          <div class="banner-header-left">
-            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM5.78 4.22a.75.75 0 0 0-1.06 1.06L6.44 7l-1.72 1.72a.75.75 0 1 0 1.06 1.06L8 7.56l2.22 2.22a.75.75 0 1 0 1.06-1.06L9.56 7l1.72-1.72a.75.75 0 0 0-1.06-1.06L8 6.44 5.78 4.22Z"/></svg>
-            Sessions
-            <span class="banner-count">3</span>
-          </div>
-          <button class="banner-toggle">Hide ▴</button>
-        </div>
-        <div class="banner-body">
-          <div class="banner-session-row">
-            <div class="session-icon coding">
-              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06l-4.25-4.25Z"/></svg>
-            </div>
-            <span class="tab-session-name">Fix null ref in auth flow</span>
-            <span class="session-branch">fix/auth-null-ref</span>
-            <span class="tab-session-status"><span class="status-dot running"></span> Running</span>
-            <span class="tab-session-time">4m ago</span>
-          </div>
-          <div class="banner-session-row">
-            <div class="session-icon triage">
-              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0ZM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 3.75a.75.75 0 0 0-1.5 0v3.5a.75.75 0 0 0 .471.696l2.5 1a.75.75 0 0 0 .557-1.392L8.75 6.617Z"/></svg>
-            </div>
-            <span class="tab-session-name">Triage run</span>
-            <span style="min-width:102px"></span>
-            <span class="tab-session-status"><span class="status-dot completed"></span> Completed</span>
-            <span class="tab-session-time">1h ago</span>
-          </div>
-          <div class="banner-session-row">
-            <div class="session-icon planning">
-              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75C2 .784 2.784 0 3.75 0h8.5C13.216 0 14 .784 14 1.75v12.5A1.75 1.75 0 0 1 12.25 16h-8.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM4.75 4a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5ZM4 7.75A.75.75 0 0 1 4.75 7h6.5a.75.75 0 0 1 0 1.5h-6.5A.75.75 0 0 1 4 7.75ZM4.75 10a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z"/></svg>
-            </div>
-            <span class="tab-session-name">Plan migration to v2 API</span>
-            <span style="min-width:102px"></span>
-            <span class="tab-session-status"><span class="status-dot failed"></span> Failed</span>
-            <span class="tab-session-time">2d ago</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Issue comment below banner -->
-      <div class="timeline-item">
-        <div class="avatar-md bg-purple">M</div>
-        <div class="comment-box">
-          <div class="comment-header">
-            <a href="#">monalisa</a> commented 3 days ago
-          </div>
-          <div class="comment-body">
-            Users are getting 500 errors when refreshing tokens. Stack trace points to <code>AuthMiddleware.cs:42</code> where <code>user.Session</code> is null.
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item faded" style="min-height:60px">
-        <div class="avatar-md bg-blue">L</div>
-        <div class="comment-box">
-          <div class="comment-header">
-            <a href="#">labudis</a> commented 2 days ago
-          </div>
-          <div class="comment-body" style="color:#9198a1">
-            Reproduced locally. Happens when the session cookie expires mid-request.
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Minimal sidebar -->
-    <div class="issue-sidebar faded">
-      <div class="sidebar-section">
-        <div class="section-header"><span class="section-title">Assignees</span></div>
-        <div class="assignee-row"><div class="avatar-sm bg-purple">M</div> monalisa</div>
-      </div>
-      <div class="sidebar-section">
-        <div class="section-header"><span class="section-title">Labels</span></div>
-        <span class="label-tag bug">bug</span><span class="label-tag p1">priority: p1</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-  <div class="narrative">
-    <h3>C. Pinned Banner</h3>
-    <div class="narrative-cols">
-      <div class="narrative-col pro">
-        <h4 class="pros">Pros</h4>
-        <ul>
-          <li>Immediately visible; running sessions are front and center when you open the issue</li>
-          <li>Collapsible, so users who don't need it can dismiss it</li>
-          <li>Keeps sidebar clean while still being prominent on the main content area</li>
-        </ul>
-      </div>
-      <div class="narrative-col con">
-        <h4 class="cons">Cons</h4>
-        <ul>
-          <li>Pushes conversation content down, especially with several sessions</li>
-          <li>May feel intrusive on issues with no active sessions (if shown by default)</li>
-          <li>New UI pattern; no existing precedent in the issues page</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- ==================== OPTION D: Sidebar section ==================== -->
-<div class="mockup-section" id="section-d">
 <div class="issue-page">
   <div class="issue-header">
     <div class="issue-title-row">
@@ -1279,7 +1185,7 @@
 </div>
 
   <div class="narrative">
-    <h3>D. Sidebar Section</h3>
+    <h3>C. Sidebar Section</h3>
     <div class="narrative-cols">
       <div class="narrative-col pro">
         <h4 class="pros">Pros</h4>
@@ -1302,8 +1208,8 @@
 
 </div>
 
-<!-- ==================== OPTION E: Header pill ==================== -->
-<div class="mockup-section" id="section-e">
+<!-- ==================== OPTION D: Pinned banner ==================== -->
+<div class="mockup-section" id="section-d">
 <div class="issue-page">
   <div class="issue-header">
     <div class="issue-title-row">
@@ -1316,68 +1222,56 @@
         Open
       </span>
       <span class="issue-meta-text"><a href="#">monalisa</a> opened 3 days ago · 4 comments</span>
-
-      <div class="pill-wrapper" style="margin-left: 8px;">
-        <div class="placement-annotation" style="margin-bottom:0;margin-right:8px;">▶</div>
-        <div class="sessions-pill" onclick="this.parentElement.querySelector('.sessions-dropdown').classList.toggle('active')" style="position:relative;">
-          <span class="pill-dot"></span>
-          <span>1 running</span>
-          <span class="pill-count">· 3 total</span>
-          <svg viewBox="0 0 16 16" fill="currentColor"><path d="m4.427 7.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z"/></svg>
-
-          <div class="sessions-dropdown active">
-            <div class="dropdown-header">
-              <span>Sessions</span>
-              <span style="font-weight:400;color:#9198a1;">3 sessions</span>
-            </div>
-
-            <div class="dropdown-session">
-              <div class="session-icon coding">
-                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06l-4.25-4.25Z"/></svg>
-              </div>
-              <div class="session-info">
-                <span class="session-label">Fix null ref in auth flow</span>
-                <span class="session-meta"><span class="status-dot running"></span> Running · Coding</span>
-              </div>
-              <div>
-                <span class="session-branch">fix/auth-null-ref</span>
-                <div class="session-meta-right">4m ago</div>
-              </div>
-            </div>
-
-            <div class="dropdown-session">
-              <div class="session-icon triage">
-                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0ZM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 3.75a.75.75 0 0 0-1.5 0v3.5a.75.75 0 0 0 .471.696l2.5 1a.75.75 0 0 0 .557-1.392L8.75 6.617Z"/></svg>
-              </div>
-              <div class="session-info">
-                <span class="session-label">Triage run</span>
-                <span class="session-meta"><span class="status-dot completed"></span> Completed · Triage</span>
-              </div>
-              <div>
-                <div class="session-meta-right">1h ago</div>
-              </div>
-            </div>
-
-            <div class="dropdown-session">
-              <div class="session-icon planning">
-                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75C2 .784 2.784 0 3.75 0h8.5C13.216 0 14 .784 14 1.75v12.5A1.75 1.75 0 0 1 12.25 16h-8.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM4.75 4a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5ZM4 7.75A.75.75 0 0 1 4.75 7h6.5a.75.75 0 0 1 0 1.5h-6.5A.75.75 0 0 1 4 7.75ZM4.75 10a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z"/></svg>
-              </div>
-              <div class="session-info">
-                <span class="session-label">Plan migration to v2 API</span>
-                <span class="session-meta"><span class="status-dot failed"></span> Failed · Planning</span>
-              </div>
-              <div>
-                <div class="session-meta-right">2d ago</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
   <div class="issue-layout">
     <div class="issue-main">
+
+      <div class="placement-annotation">▼ Collapsible banner pinned above the conversation</div>
+
+      <!-- Sessions banner -->
+      <div class="sessions-banner">
+        <div class="banner-header">
+          <div class="banner-header-left">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM5.78 4.22a.75.75 0 0 0-1.06 1.06L6.44 7l-1.72 1.72a.75.75 0 1 0 1.06 1.06L8 7.56l2.22 2.22a.75.75 0 1 0 1.06-1.06L9.56 7l1.72-1.72a.75.75 0 0 0-1.06-1.06L8 6.44 5.78 4.22Z"/></svg>
+            Sessions
+            <span class="banner-count">3</span>
+          </div>
+          <button class="banner-toggle">Hide ▴</button>
+        </div>
+        <div class="banner-body">
+          <div class="banner-session-row">
+            <div class="session-icon coding">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06l-4.25-4.25Z"/></svg>
+            </div>
+            <span class="tab-session-name">Fix null ref in auth flow</span>
+            <span class="session-branch">fix/auth-null-ref</span>
+            <span class="tab-session-status"><span class="status-dot running"></span> Running</span>
+            <span class="tab-session-time">4m ago</span>
+          </div>
+          <div class="banner-session-row">
+            <div class="session-icon triage">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0ZM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 3.75a.75.75 0 0 0-1.5 0v3.5a.75.75 0 0 0 .471.696l2.5 1a.75.75 0 0 0 .557-1.392L8.75 6.617Z"/></svg>
+            </div>
+            <span class="tab-session-name">Triage run</span>
+            <span style="min-width:102px"></span>
+            <span class="tab-session-status"><span class="status-dot completed"></span> Completed</span>
+            <span class="tab-session-time">1h ago</span>
+          </div>
+          <div class="banner-session-row">
+            <div class="session-icon planning">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75C2 .784 2.784 0 3.75 0h8.5C13.216 0 14 .784 14 1.75v12.5A1.75 1.75 0 0 1 12.25 16h-8.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM4.75 4a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5ZM4 7.75A.75.75 0 0 1 4.75 7h6.5a.75.75 0 0 1 0 1.5h-6.5A.75.75 0 0 1 4 7.75ZM4.75 10a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z"/></svg>
+            </div>
+            <span class="tab-session-name">Plan migration to v2 API</span>
+            <span style="min-width:102px"></span>
+            <span class="tab-session-status"><span class="status-dot failed"></span> Failed</span>
+            <span class="tab-session-time">2d ago</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Issue comment below banner -->
       <div class="timeline-item">
         <div class="avatar-md bg-purple">M</div>
         <div class="comment-box">
@@ -1401,8 +1295,10 @@
           </div>
         </div>
       </div>
+
     </div>
 
+    <!-- Minimal sidebar -->
     <div class="issue-sidebar faded">
       <div class="sidebar-section">
         <div class="section-header"><span class="section-title">Assignees</span></div>
@@ -1417,22 +1313,126 @@
 </div>
 
   <div class="narrative">
-    <h3>E. Header Pill</h3>
+    <h3>D. Pinned Banner</h3>
     <div class="narrative-cols">
       <div class="narrative-col pro">
         <h4 class="pros">Pros</h4>
         <ul>
-          <li>Always visible at the top; impossible to miss an active session</li>
-          <li>Minimal footprint; just a small pill until clicked</li>
-          <li>Dropdown provides full detail on demand without leaving the page</li>
+          <li>Immediately visible; running sessions are front and center when you open the issue</li>
+          <li>Collapsible, so users who don't need it can dismiss it</li>
+          <li>Keeps sidebar clean while still being prominent on the main content area</li>
         </ul>
       </div>
       <div class="narrative-col con">
         <h4 class="cons">Cons</h4>
         <ul>
-          <li>Header area is already dense; another element competes for attention</li>
-          <li>Dropdown overlays content, which can obscure important context</li>
-          <li>Not a standard pattern in the issues header; may feel unexpected</li>
+          <li>Pushes conversation content down, especially with several sessions</li>
+          <li>May feel intrusive on issues with no active sessions (if shown by default)</li>
+          <li>New UI pattern; no existing precedent in the issues page</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== OPTION E: Tabs ==================== -->
+<div class="mockup-section" id="section-e">
+<div class="issue-page">
+  <div class="issue-header">
+    <div class="issue-title-row">
+      <span class="issue-title">Null reference in auth middleware on token refresh</span>
+      <span class="issue-number">#1842</span>
+    </div>
+    <div class="issue-status-bar">
+      <span class="status-badge">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"/></svg>
+        Open
+      </span>
+      <span class="issue-meta-text"><a href="#">monalisa</a> opened 3 days ago · 4 comments</span>
+    </div>
+  </div>
+
+  <div class="placement-annotation">▼ Sessions as a tab alongside conversation</div>
+
+  <div class="issue-tabs">
+    <div class="issue-tab">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z"/></svg>
+      Conversation <span class="tab-count">4</span>
+    </div>
+    <div class="issue-tab active">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06l-4.25-4.25Z"/></svg>
+      Sessions <span class="tab-count">3</span>
+    </div>
+  </div>
+
+  <div class="issue-layout">
+    <div class="issue-main">
+      <div class="tab-sessions-panel">
+        <div class="tab-session-row">
+          <div class="session-icon coding">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06l-4.25-4.25Z"/></svg>
+          </div>
+          <span class="tab-session-name">Fix null ref in auth flow</span>
+          <span class="tab-session-type">Coding</span>
+          <span class="session-branch">fix/auth-null-ref</span>
+          <span class="tab-session-status"><span class="status-dot running"></span> Running</span>
+          <span class="tab-session-time">4m ago</span>
+        </div>
+        <div class="tab-session-row">
+          <div class="session-icon triage">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0ZM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 3.75a.75.75 0 0 0-1.5 0v3.5a.75.75 0 0 0 .471.696l2.5 1a.75.75 0 0 0 .557-1.392L8.75 6.617Z"/></svg>
+          </div>
+          <span class="tab-session-name">Triage run</span>
+          <span class="tab-session-type">Triage</span>
+          <span style="min-width:102px"></span>
+          <span class="tab-session-status"><span class="status-dot completed"></span> Completed</span>
+          <span class="tab-session-time">1h ago</span>
+        </div>
+        <div class="tab-session-row">
+          <div class="session-icon planning">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75C2 .784 2.784 0 3.75 0h8.5C13.216 0 14 .784 14 1.75v12.5A1.75 1.75 0 0 1 12.25 16h-8.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM4.75 4a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5ZM4 7.75A.75.75 0 0 1 4.75 7h6.5a.75.75 0 0 1 0 1.5h-6.5A.75.75 0 0 1 4 7.75ZM4.75 10a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z"/></svg>
+          </div>
+          <span class="tab-session-name">Plan migration to v2 API</span>
+          <span class="tab-session-type">Planning</span>
+          <span style="min-width:102px"></span>
+          <span class="tab-session-status"><span class="status-dot failed"></span> Failed</span>
+          <span class="tab-session-time">2d ago</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Minimal sidebar (no sessions here) -->
+    <div class="issue-sidebar faded">
+      <div class="sidebar-section">
+        <div class="section-header"><span class="section-title">Assignees</span></div>
+        <div class="assignee-row"><div class="avatar-sm bg-purple">M</div> monalisa</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="section-header"><span class="section-title">Labels</span></div>
+        <span class="label-tag bug">bug</span><span class="label-tag p1">priority: p1</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="narrative">
+    <h3>E. Tabs</h3>
+    <div class="narrative-cols">
+      <div class="narrative-col pro">
+        <h4 class="pros">Pros</h4>
+        <ul>
+          <li>Keeps conversation view completely clean; sessions are only visible when you want them</li>
+          <li>Room for rich detail per session (branch, duration, logs) without space constraints</li>
+          <li>Familiar pattern; mirrors PR tabs (Conversation, Commits, Files changed)</li>
+        </ul>
+      </div>
+      <div class="narrative-col con">
+        <h4 class="cons">Cons</h4>
+        <ul>
+          <li>Sessions are hidden by default; users may not notice an agent is actively working</li>
+          <li>Requires a full page switch, breaking reading flow</li>
+          <li>Adds a new top-level tab to an already crowded header on some issue types</li>
         </ul>
       </div>
     </div>
