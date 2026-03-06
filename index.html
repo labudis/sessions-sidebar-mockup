@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sessions Placement Alternatives</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    padding: 32px;
+  }
+
+  /* Option selector */
+  .option-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .option-nav-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #9198a1;
+    white-space: nowrap;
+  }
+
+  .option-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    background: #21262d;
+    color: #e6edf3;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover { border-color: #6e7681; }
+  .option-btn.active {
+    background: #1f6feb;
+    border-color: #1f6feb;
+    color: #fff;
+  }
+
+  .mockup-section {
+    display: none;
+  }
+
+  .mockup-section.active {
+    display: block;
+  }
+
+  /* Shared issue page chrome */
+  .issue-page {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  .issue-header {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #30363d;
+    margin-bottom: 16px;
+  }
+
+  .issue-title-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .issue-title {
+    font-size: 24px;
+    font-weight: 400;
+    color: #e6edf3;
+    line-height: 1.3;
+  }
+
+  .issue-number {
+    font-size: 24px;
+    font-weight: 400;
+    color: #9198a1;
+  }
+
+  .issue-status-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    background: #238636;
+    color: #fff;
+  }
+
+  .status-badge svg { width: 12px; height: 12px; }
+
+  .issue-meta-text {
+    font-size: 13px;
+    color: #9198a1;
+  }
+
+  .issue-meta-text a {
+    color: #e6edf3;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* Layout */
+  .issue-layout {
+    display: flex;
+    gap: 24px;
+  }
+
+  .issue-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .issue-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+  }
+
+  /* Comment / timeline */
+  .comment-box {
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  .comment-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    border-radius: 8px 8px 0 0;
+    font-size: 13px;
+    color: #9198a1;
+  }
+
+  .comment-header a {
+    color: #e6edf3;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .comment-body {
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #e6edf3;
+  }
+
+  .comment-body code {
+    background: #21262d;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+
+  .avatar-sm {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .avatar-md {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .bg-purple { background: #6e40c9; }
+  .bg-blue { background: #1f6feb; }
+  .bg-gray { background: #30363d; color: #9198a1; }
+
+  /* Timeline connector */
+  .timeline-item {
+    position: relative;
+    padding-left: 44px;
+    padding-bottom: 16px;
+  }
+
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    bottom: 0;
+    width: 2px;
+    background: #30363d;
+  }
+
+  .timeline-item:last-child::before { display: none; }
+
+  .timeline-item .avatar-md {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  /* Timeline event (non-comment) */
+  .timeline-event {
+    position: relative;
+    padding-left: 44px;
+    padding-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #9198a1;
+  }
+
+  .timeline-event::before {
+    content: "";
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    bottom: 0;
+    width: 2px;
+    background: #30363d;
+  }
+
+  .timeline-event-icon {
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #0d1117;
+    border: 2px solid #30363d;
+  }
+
+  .timeline-event-icon svg {
+    width: 12px;
+    height: 12px;
+    color: #9198a1;
+  }
+
+  .timeline-event a {
+    color: #e6edf3;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* Sidebar sections */
+  .sidebar-section {
+    padding: 12px 0;
+    border-bottom: 1px solid #30363d;
+  }
+
+  .sidebar-section:first-child { padding-top: 0; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #e6edf3;
+  }
+
+  .gear-icon {
+    color: #9198a1;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .assignee-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 0;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .label-tag {
+    display: inline-flex;
+    padding: 0 8px;
+    height: 20px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    align-items: center;
+    margin: 2px 4px 2px 0;
+  }
+
+  .label-tag.bug { background: #da3633; color: #fff; }
+  .label-tag.p1 { background: #d29922; color: #fff; }
+
+  .sidebar-text {
+    font-size: 12px;
+    color: #9198a1;
+  }
+
+  /* Session atoms (reused) */
+  .session-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+  }
+
+  .session-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    margin-top: 1px;
+  }
+
+  .session-icon svg { width: 14px; height: 14px; }
+  .session-icon.coding { background: rgba(31,111,235,0.15); color: #4493f8; }
+  .session-icon.triage { background: rgba(210,153,34,0.15); color: #d29922; }
+  .session-icon.planning { background: rgba(110,64,201,0.15); color: #a371f7; }
+
+  .session-info { flex: 1; min-width: 0; }
+
+  .session-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #e6edf3;
+    display: block;
+    line-height: 1.4;
+  }
+
+  .session-meta {
+    font-size: 12px;
+    color: #9198a1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1.4;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-dot.running {
+    background: #3fb950;
+    box-shadow: 0 0 4px rgba(63,185,80,0.4);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .status-dot.completed { background: #9198a1; }
+  .status-dot.failed { background: #f85149; }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+  /* ========= OPTION A: Tabs ========= */
+  .issue-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid #30363d;
+    margin-bottom: 16px;
+  }
+
+  .issue-tab {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #9198a1;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.1s;
+  }
+
+  .issue-tab:hover { color: #e6edf3; }
+
+  .issue-tab.active {
+    color: #e6edf3;
+    border-bottom-color: #f78166;
+  }
+
+  .tab-count {
+    font-size: 12px;
+    background: #21262d;
+    border-radius: 10px;
+    padding: 0 6px;
+    line-height: 18px;
+  }
+
+  .tab-sessions-panel {
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .tab-session-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #30363d;
+    font-size: 13px;
+  }
+
+  .tab-session-row:last-child { border-bottom: none; }
+  .tab-session-row:hover { background: #161b22; }
+
+  .tab-session-name {
+    font-weight: 600;
+    color: #e6edf3;
+    flex: 1;
+  }
+
+  .tab-session-type {
+    font-size: 12px;
+    color: #9198a1;
+    background: #21262d;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .tab-session-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: #9198a1;
+    min-width: 120px;
+  }
+
+  .tab-session-time {
+    font-size: 12px;
+    color: #7d8590;
+    min-width: 60px;
+    text-align: right;
+  }
+
+  /* ========= OPTION B: Timeline entries ========= */
+  .session-timeline-card {
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .session-timeline-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    font-size: 13px;
+    color: #9198a1;
+  }
+
+  .session-timeline-header a { color: #e6edf3; text-decoration: none; font-weight: 600; }
+
+  .session-timeline-body {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .session-timeline-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #9198a1;
+  }
+
+  .session-timeline-desc {
+    flex: 1;
+    font-size: 13px;
+    color: #e6edf3;
+  }
+
+  .session-branch {
+    font-size: 12px;
+    background: rgba(31,111,235,0.15);
+    color: #4493f8;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+
+  /* Copilot avatar */
+  .avatar-copilot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #161b22;
+    border: 1px solid #30363d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .avatar-copilot svg { width: 18px; height: 18px; color: #9198a1; }
+
+  .timeline-item .avatar-copilot {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  /* ========= OPTION C: Sub-issue / pinned banner ========= */
+  .sessions-banner {
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .banner-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    cursor: pointer;
+  }
+
+  .banner-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #e6edf3;
+  }
+
+  .banner-header-left svg { width: 16px; height: 16px; color: #9198a1; }
+
+  .banner-count {
+    font-size: 12px;
+    background: #21262d;
+    border-radius: 10px;
+    padding: 0 6px;
+    line-height: 18px;
+    color: #9198a1;
+    font-weight: 400;
+  }
+
+  .banner-toggle {
+    font-size: 12px;
+    color: #4493f8;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .banner-body {
+    padding: 0;
+  }
+
+  .banner-session-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid #21262d;
+    font-size: 13px;
+  }
+
+  .banner-session-row:last-child { border-bottom: none; }
+
+  /* Annotation */
+  .placement-annotation {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: rgba(31,111,235,0.1);
+    border: 1px dashed #1f6feb;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #4493f8;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  .faded { opacity: 0.4; }
+
+  .gear-svg { width: 16px; height: 16px; color: #9198a1; }
+</style>
+</head>
+<body>
+
+<!-- Option selector -->
+<div class="option-nav">
+  <span class="option-nav-label">Placement:</span>
+  <button class="option-btn active" onclick="show('a')">A. Tabs</button>
+  <button class="option-btn" onclick="show('b')">B. Timeline events</button>
+  <button class="option-btn" onclick="show('c')">C. Pinned banner</button>
+</div>
+
+<!-- ==================== OPTION A: Tabs ==================== -->
+<div class="mockup-section active" id="section-a">
+<div class="issue-page">
+  <div class="issue-header">
+    <div class="issue-title-row">
+      <span class="issue-title">Null reference in auth middleware on token refresh</span>
+      <span class="issue-number">#1842</span>
+    </div>
+    <div class="issue-status-bar">
+      <span class="status-badge">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"/></svg>
+        Open
+      </span>
+      <span class="issue-meta-text"><a href="#">monalisa</a> opened 3 days ago · 4 comments</span>
+    </div>
+  </div>
+
+  <div class="placement-annotation">▼ Sessions as a tab alongside conversation</div>
+
+  <div class="issue-tabs">
+    <div class="issue-tab">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z"/></svg>
+      Conversation <span class="tab-count">4</span>
+    </div>
+    <div class="issue-tab active">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06l-4.25-4.25Z"/></svg>
+      Sessions <span class="tab-count">3</span>
+    </div>
+  </div>
+
+  <div class="issue-layout">
+    <div class="issue-main">
+      <div class="tab-sessions-panel">
+        <div class="tab-session-row">
+          <div class="session-icon coding">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06l-4.25-4.25Z"/></svg>
+          </div>
+          <span class="tab-session-name">Fix null ref in auth flow</span>
+          <span class="tab-session-type">Coding</span>
+          <span class="session-branch">fix/auth-null-ref</span>
+          <span class="tab-session-status"><span class="status-dot running"></span> Running</span>
+          <span class="tab-session-time">4m ago</span>
+        </div>
+        <div class="tab-session-row">
+          <div class="session-icon triage">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0ZM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 3.75a.75.75 0 0 0-1.5 0v3.5a.75.75 0 0 0 .471.696l2.5 1a.75.75 0 0 0 .557-1.392L8.75 6.617Z"/></svg>
+          </div>
+          <span class="tab-session-name">Triage run</span>
+          <span class="tab-session-type">Triage</span>
+          <span style="min-width:102px"></span>
+          <span class="tab-session-status"><span class="status-dot completed"></span> Completed</span>
+          <span class="tab-session-time">1h ago</span>
+        </div>
+        <div class="tab-session-row">
+          <div class="session-icon planning">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75C2 .784 2.784 0 3.75 0h8.5C13.216 0 14 .784 14 1.75v12.5A1.75 1.75 0 0 1 12.25 16h-8.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM4.75 4a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5ZM4 7.75A.75.75 0 0 1 4.75 7h6.5a.75.75 0 0 1 0 1.5h-6.5A.75.75 0 0 1 4 7.75ZM4.75 10a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z"/></svg>
+          </div>
+          <span class="tab-session-name">Plan migration to v2 API</span>
+          <span class="tab-session-type">Planning</span>
+          <span style="min-width:102px"></span>
+          <span class="tab-session-status"><span class="status-dot failed"></span> Failed</span>
+          <span class="tab-session-time">2d ago</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Minimal sidebar (no sessions here) -->
+    <div class="issue-sidebar faded">
+      <div class="sidebar-section">
+        <div class="section-header"><span class="section-title">Assignees</span></div>
+        <div class="assignee-row"><div class="avatar-sm bg-purple">M</div> monalisa</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="section-header"><span class="section-title">Labels</span></div>
+        <span class="label-tag bug">bug</span><span class="label-tag p1">priority: p1</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== OPTION B: Timeline ==================== -->
+<div class="mockup-section" id="section-b">
+<div class="issue-page">
+  <div class="issue-header">
+    <div class="issue-title-row">
+      <span class="issue-title">Null reference in auth middleware on token refresh</span>
+      <span class="issue-number">#1842</span>
+    </div>
+    <div class="issue-status-bar">
+      <span class="status-badge">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"/></svg>
+        Open
+      </span>
+      <span class="issue-meta-text"><a href="#">monalisa</a> opened 3 days ago · 4 comments</span>
+    </div>
+  </div>
+
+  <div class="issue-layout">
+    <div class="issue-main">
+
+      <!-- Opening comment -->
+      <div class="timeline-item">
+        <div class="avatar-md bg-purple">M</div>
+        <div class="comment-box">
+          <div class="comment-header">
+            <a href="#">monalisa</a> commented 3 days ago
+          </div>
+          <div class="comment-body">
+            Users are getting 500 errors when refreshing tokens. Stack trace points to <code>AuthMiddleware.cs:42</code> where <code>user.Session</code> is null.
+          </div>
+        </div>
+      </div>
+
+      <!-- Triage session event -->
+      <div class="timeline-item">
+        <div class="avatar-copilot">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM5.78 4.22a.75.75 0 0 0-1.06 1.06L6.44 7l-1.72 1.72a.75.75 0 1 0 1.06 1.06L8 7.56l2.22 2.22a.75.75 0 1 0 1.06-1.06L9.56 7l1.72-1.72a.75.75 0 0 0-1.06-1.06L8 6.44 5.78 4.22Z"/></svg>
+        </div>
+        <div class="session-timeline-card">
+          <div class="session-timeline-header">
+            <div class="session-icon triage" style="width:18px;height:18px;border-radius:4px;">
+              <svg viewBox="0 0 16 16" fill="currentColor" style="width:12px;height:12px;"><path d="M1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0ZM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 3.75a.75.75 0 0 0-1.5 0v3.5a.75.75 0 0 0 .471.696l2.5 1a.75.75 0 0 0 .557-1.392L8.75 6.617Z"/></svg>
+            </div>
+            <strong style="color:#e6edf3">Triage session</strong> · completed 2 days ago
+          </div>
+          <div class="session-timeline-body">
+            <span class="session-timeline-status"><span class="status-dot completed"></span></span>
+            <span class="session-timeline-desc">Confirmed reproducible. Classified as P1 bug. Added <code>bug</code> and <code>priority: p1</code> labels.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="placement-annotation">▲ Sessions appear inline as timeline events</div>
+
+      <!-- Coding session event (running) -->
+      <div class="timeline-item">
+        <div class="avatar-copilot">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM5.78 4.22a.75.75 0 0 0-1.06 1.06L6.44 7l-1.72 1.72a.75.75 0 1 0 1.06 1.06L8 7.56l2.22 2.22a.75.75 0 1 0 1.06-1.06L9.56 7l1.72-1.72a.75.75 0 0 0-1.06-1.06L8 6.44 5.78 4.22Z"/></svg>
+        </div>
+        <div class="session-timeline-card">
+          <div class="session-timeline-header">
+            <div class="session-icon coding" style="width:18px;height:18px;border-radius:4px;">
+              <svg viewBox="0 0 16 16" fill="currentColor" style="width:12px;height:12px;"><path d="M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06l-4.25-4.25Z"/></svg>
+            </div>
+            <strong style="color:#e6edf3">Coding session</strong> · started 4 minutes ago
+          </div>
+          <div class="session-timeline-body">
+            <span class="session-timeline-status"><span class="status-dot running"></span></span>
+            <span class="session-timeline-desc">Fix null ref in auth flow</span>
+            <span class="session-branch">fix/auth-null-ref</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Minimal sidebar -->
+    <div class="issue-sidebar faded">
+      <div class="sidebar-section">
+        <div class="section-header"><span class="section-title">Assignees</span></div>
+        <div class="assignee-row"><div class="avatar-sm bg-purple">M</div> monalisa</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="section-header"><span class="section-title">Labels</span></div>
+        <span class="label-tag bug">bug</span><span class="label-tag p1">priority: p1</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== OPTION C: Pinned banner ==================== -->
+<div class="mockup-section" id="section-c">
+<div class="issue-page">
+  <div class="issue-header">
+    <div class="issue-title-row">
+      <span class="issue-title">Null reference in auth middleware on token refresh</span>
+      <span class="issue-number">#1842</span>
+    </div>
+    <div class="issue-status-bar">
+      <span class="status-badge">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"/></svg>
+        Open
+      </span>
+      <span class="issue-meta-text"><a href="#">monalisa</a> opened 3 days ago · 4 comments</span>
+    </div>
+  </div>
+
+  <div class="issue-layout">
+    <div class="issue-main">
+
+      <div class="placement-annotation">▼ Collapsible banner pinned above the conversation</div>
+
+      <!-- Sessions banner -->
+      <div class="sessions-banner">
+        <div class="banner-header">
+          <div class="banner-header-left">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM5.78 4.22a.75.75 0 0 0-1.06 1.06L6.44 7l-1.72 1.72a.75.75 0 1 0 1.06 1.06L8 7.56l2.22 2.22a.75.75 0 1 0 1.06-1.06L9.56 7l1.72-1.72a.75.75 0 0 0-1.06-1.06L8 6.44 5.78 4.22Z"/></svg>
+            Sessions
+            <span class="banner-count">3</span>
+          </div>
+          <button class="banner-toggle">Hide ▴</button>
+        </div>
+        <div class="banner-body">
+          <div class="banner-session-row">
+            <div class="session-icon coding">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 0 1 1.06 1.06L2.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25Zm6.56 0a.75.75 0 1 0-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 1 0 1.06 1.06l4.25-4.25a.75.75 0 0 0 0-1.06l-4.25-4.25Z"/></svg>
+            </div>
+            <span class="tab-session-name">Fix null ref in auth flow</span>
+            <span class="session-branch">fix/auth-null-ref</span>
+            <span class="tab-session-status"><span class="status-dot running"></span> Running</span>
+            <span class="tab-session-time">4m ago</span>
+          </div>
+          <div class="banner-session-row">
+            <div class="session-icon triage">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0ZM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 3.75a.75.75 0 0 0-1.5 0v3.5a.75.75 0 0 0 .471.696l2.5 1a.75.75 0 0 0 .557-1.392L8.75 6.617Z"/></svg>
+            </div>
+            <span class="tab-session-name">Triage run</span>
+            <span style="min-width:102px"></span>
+            <span class="tab-session-status"><span class="status-dot completed"></span> Completed</span>
+            <span class="tab-session-time">1h ago</span>
+          </div>
+          <div class="banner-session-row">
+            <div class="session-icon planning">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75C2 .784 2.784 0 3.75 0h8.5C13.216 0 14 .784 14 1.75v12.5A1.75 1.75 0 0 1 12.25 16h-8.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM4.75 4a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5ZM4 7.75A.75.75 0 0 1 4.75 7h6.5a.75.75 0 0 1 0 1.5h-6.5A.75.75 0 0 1 4 7.75ZM4.75 10a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z"/></svg>
+            </div>
+            <span class="tab-session-name">Plan migration to v2 API</span>
+            <span style="min-width:102px"></span>
+            <span class="tab-session-status"><span class="status-dot failed"></span> Failed</span>
+            <span class="tab-session-time">2d ago</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Issue comment below banner -->
+      <div class="timeline-item">
+        <div class="avatar-md bg-purple">M</div>
+        <div class="comment-box">
+          <div class="comment-header">
+            <a href="#">monalisa</a> commented 3 days ago
+          </div>
+          <div class="comment-body">
+            Users are getting 500 errors when refreshing tokens. Stack trace points to <code>AuthMiddleware.cs:42</code> where <code>user.Session</code> is null.
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item faded" style="min-height:60px">
+        <div class="avatar-md bg-blue">L</div>
+        <div class="comment-box">
+          <div class="comment-header">
+            <a href="#">labudis</a> commented 2 days ago
+          </div>
+          <div class="comment-body" style="color:#9198a1">
+            Reproduced locally. Happens when the session cookie expires mid-request.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Minimal sidebar -->
+    <div class="issue-sidebar faded">
+      <div class="sidebar-section">
+        <div class="section-header"><span class="section-title">Assignees</span></div>
+        <div class="assignee-row"><div class="avatar-sm bg-purple">M</div> monalisa</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="section-header"><span class="section-title">Labels</span></div>
+        <span class="label-tag bug">bug</span><span class="label-tag p1">priority: p1</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.mockup-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
