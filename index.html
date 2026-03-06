@@ -639,6 +639,68 @@
 
   .faded { opacity: 0.4; }
 
+  /* Pros/Cons narrative */
+  .narrative {
+    max-width: 1080px;
+    margin: 24px auto 0;
+    padding: 20px 24px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+  }
+
+  .narrative h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e6edf3;
+    margin-bottom: 12px;
+  }
+
+  .narrative-cols {
+    display: flex;
+    gap: 24px;
+  }
+
+  .narrative-col {
+    flex: 1;
+  }
+
+  .narrative-col h4 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .narrative-col h4.pros { color: #3fb950; }
+  .narrative-col h4.cons { color: #f85149; }
+
+  .narrative-col ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .narrative-col li {
+    font-size: 13px;
+    color: #9198a1;
+    line-height: 1.6;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .narrative-col li::before {
+    position: absolute;
+    left: 0;
+    font-size: 12px;
+  }
+
+  .narrative-col.pro li::before { content: "+"; color: #3fb950; font-weight: 700; }
+  .narrative-col.con li::before { content: "−"; color: #f85149; font-weight: 700; }
+
   .gear-svg { width: 16px; height: 16px; color: #9198a1; }
 </style>
 </head>
@@ -734,6 +796,28 @@
 </div>
 </div>
 
+  <div class="narrative">
+    <h3>A. Tabs</h3>
+    <div class="narrative-cols">
+      <div class="narrative-col pro">
+        <h4 class="pros">Pros</h4>
+        <ul>
+          <li>Keeps conversation view completely clean; sessions are only visible when you want them</li>
+          <li>Room for rich detail per session (branch, duration, logs) without space constraints</li>
+          <li>Familiar pattern; mirrors PR tabs (Conversation, Commits, Files changed)</li>
+        </ul>
+      </div>
+      <div class="narrative-col con">
+        <h4 class="cons">Cons</h4>
+        <ul>
+          <li>Sessions are hidden by default; users may not notice an agent is actively working</li>
+          <li>Requires a full page switch, breaking reading flow</li>
+          <li>Adds a new top-level tab to an already crowded header on some issue types</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
 <!-- ==================== OPTION B: Timeline ==================== -->
 <div class="mockup-section" id="section-b">
 <div class="issue-page">
@@ -824,6 +908,28 @@
   </div>
 </div>
 </div>
+
+  <div class="narrative">
+    <h3>B. Timeline Events</h3>
+    <div class="narrative-cols">
+      <div class="narrative-col pro">
+        <h4 class="pros">Pros</h4>
+        <ul>
+          <li>Sessions appear in chronological context alongside human comments and activity</li>
+          <li>Makes agent work feel like a natural part of the issue's story</li>
+          <li>No new UI surfaces to learn; uses existing timeline patterns</li>
+        </ul>
+      </div>
+      <div class="narrative-col con">
+        <h4 class="cons">Cons</h4>
+        <ul>
+          <li>Can get buried in long conversations with many comments</li>
+          <li>Hard to get a quick overview of all sessions at a glance</li>
+          <li>Adds visual weight to the timeline, especially with multiple sessions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
 <!-- ==================== OPTION C: Pinned banner ==================== -->
 <div class="mockup-section" id="section-c">
@@ -929,6 +1035,28 @@
   </div>
 </div>
 </div>
+
+  <div class="narrative">
+    <h3>C. Pinned Banner</h3>
+    <div class="narrative-cols">
+      <div class="narrative-col pro">
+        <h4 class="pros">Pros</h4>
+        <ul>
+          <li>Immediately visible; running sessions are front and center when you open the issue</li>
+          <li>Collapsible, so users who don't need it can dismiss it</li>
+          <li>Keeps sidebar clean while still being prominent on the main content area</li>
+        </ul>
+      </div>
+      <div class="narrative-col con">
+        <h4 class="cons">Cons</h4>
+        <ul>
+          <li>Pushes conversation content down, especially with several sessions</li>
+          <li>May feel intrusive on issues with no active sessions (if shown by default)</li>
+          <li>New UI pattern; no existing precedent in the issues page</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
 <!-- ==================== OPTION D: Sidebar section ==================== -->
 <div class="mockup-section" id="section-d">
@@ -1036,6 +1164,28 @@
   </div>
 </div>
 </div>
+
+  <div class="narrative">
+    <h3>D. Sidebar Section</h3>
+    <div class="narrative-cols">
+      <div class="narrative-col pro">
+        <h4 class="pros">Pros</h4>
+        <ul>
+          <li>Follows existing sidebar conventions (Assignees, Labels, Projects); minimal learning curve</li>
+          <li>Always visible without taking space from the main content area</li>
+          <li>Quick glanceable status; fits the "metadata at a glance" mental model of the sidebar</li>
+        </ul>
+      </div>
+      <div class="narrative-col con">
+        <h4 class="cons">Cons</h4>
+        <ul>
+          <li>Sidebar is already crowded on issues with many fields (Projects, Milestones, Development)</li>
+          <li>Limited horizontal space constrains how much detail each session can show</li>
+          <li>Easy to scroll past on long sidebars; position relative to other sections matters</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
 <script>
 function show(id) {
